@@ -33,9 +33,12 @@ jobs:
       run: |
         git config --global user.name "jstrieb/github-stats"
         git config --global user.email "github-stats[bot]@jstrieb.github.io"
-        # Push generated files to the generated branch
+        # Push generated files to the generated branch. Use `git switch`, which
+        # only ever resolves branches: `git checkout generated` silently
+        # restores the tracked generated/ directory instead of switching, and
+        # exits 0, so the commit below would land on the wrong branch.
         git pull
-        git checkout generated || git checkout -b generated
+        git switch generated || git switch -c generated
 
     - name: Generate images
       run: |
